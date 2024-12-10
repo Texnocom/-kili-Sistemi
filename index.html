@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çekiliş Sistemi</title>
+  <style>
+    /* GENEL STİLLER */
+    body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden; /* Sayfa genelinde kaydırmayı kapatıyoruz */
+}
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #1a237e;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #546e7a;
+      margin: 5px 0 20px;
+    }
+
+    #form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    #form-container textarea, #form-container input, #form-container button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    #form-container textarea {
+      height: 100px;
+      resize: none;
+      font-size: 1rem;
+      background-color: #f1f8e9;
+    }
+
+    #form-container button {
+      background: linear-gradient(45deg, #4caf50, #8bc34a);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #form-container button:hover {
+      background: linear-gradient(45deg, #388e3c, #689f38);
+    }
+
+    #main-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden; /* İçerik alanı kaydırmayı engelliyoruz */
+}
+
+#participants, #winners {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* Kaydırma ekliyoruz */
+  max-height: 60vh; /* Yüksekliği sınırlandırıyoruz */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+#participants h2, #winners h2 {
+  position: sticky;
+  top: 0;
+  background: #4caf50;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  z-index: 1; /* Başlıkların üstte kalmasını sağlamak için */
+}
+
+#participants ul, #winners ul {
+  padding: 0;
+  list-style-type: none;
+  margin-top: 20px; /* Başlık ile isimler arasına biraz boşluk ekliyoruz */
+}
+
+    #participants li, #winners li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+    #participants li:last-child, #winners li:last-child {
+      border-bottom: none;
+    }
+
+    #animationContainer {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 300px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+    }
+
+    .randomName {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #424242;
+      animation: flash 0.1s linear infinite;
+    }
+
+    .winner {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #4caf50;
+      animation: winnerHighlight 1s forwards;
+    }
+
+    #countdown {
+      position: absolute;
+      top: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+      
+    }
+
+    @keyframes winnerHighlight {
+      0% { transform: scale(1); color: #d32f2f; }
+      50% { transform: scale(1.5); color: #ff5722; }
+      100% { transform: scale(2); color: #4caf50; }
+    }
+
+    .fireworks {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,212,255,0) 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: explode 1s linear infinite;
+    }
+
+    @keyframes explode {
+      0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+      }
+    }
+
+    footer {
+  text-align: center;
+  padding: 10px;
+  background: #1a1a1a;
+  color: white;
+  font-size: 0.9rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10; /* Diğer içeriklerin üstünde kalması için */
+  margin-top: 10cm; /* Footer'ı yukarı kaydırıyoruz */
+  padding-top: 20px; /* Alt kısmına biraz boşluk bırakıyoruz */
+}
+
+    footer a {
+      color: #03a9f4;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Çəkiliş Sistemi</h1>
+    <p>Adları yazın və qazananı tapın!</p>
+  </header>
+  <div id="form-container">
+    <textarea id="names" placeholder="Adları vergül ilə ayırın..."></textarea>
+    <input type="number" id="winnerCount" min="1" placeholder="Qazanan sayı">
+    <button onclick="startDraw()">Çəkilişi başlat</button>
+  </div>
+
+  <div id="main-container">
+    <div id="participants">
+      <h2>Qatılanlar</h2>
+      <ul id="participantsList"></ul>
+    </div>
+    <div id="animationContainer">
+      <div id="countdown"></div>
+    </div>
+    <div id="winners">
+      <h2>Qazananlar</h2>
+      <ul id="winnersList"></ul>
+    </div>
+  </div>
+
+  <footer>
+    Bütün hüquqlar qorunur &copy; 2024 | <a href="#">Məxfilik Siyasəti</a>
+  </footer>
+
+  <script>
+    const participantsList = document.getElementById("participantsList");
+    const winnersList = document.getElementById("winnersList");
+    const animationContainer = document.getElementById("animationContainer");
+    const countdown = document.getElementById("countdown");
+    let names = [];
+    let winnerCount = 0;
+
+    function startDraw() {
+      const namesInput = document.getElementById("names").value;
+      names = namesInput.split(",").map(name => name.trim()).filter(name => name);
+      winnerCount = parseInt(document.getElementById("winnerCount").value);
+
+      if (names.length === 0 || isNaN(winnerCount) || winnerCount < 1) {
+        alert("Zəhmət olmasa qaliblərin adlarını və sayını düzgün daxil edin!");
+        return;
+      }
+
+      // Katılımcıları listele
+      participantsList.innerHTML = "";
+      names.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        participantsList.appendChild(li);
+      });
+
+      animationContainer.innerHTML = "";
+      winnersList.innerHTML = "";
+      runRandomizer(0);
+    }
+
+    function runRandomizer(index) {
+      if (index >= winnerCount) return;
+
+      let interval = setInterval(() => {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        animationContainer.innerHTML = `<div class="randomName">${randomName}</div>`;
+      }, 100);
+
+      let seconds = 5;
+      countdown.textContent = `Diğer kazananın belirlenmesine ${seconds} saniye kaldı...`;
+      const countdownInterval = setInterval(() => {
+        seconds -= 1;
+        countdown.textContent = `Diğer kazananın belirlenmesine ${seconds} saniye kaldı...`;
+        if (seconds === 0) {
+          clearInterval(countdownInterval);
+        }
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        const winner = names.splice(Math.floor(Math.random() * names.length), 1)[0];
+        animationContainer.innerHTML = `<div class="winner">${winner}</div>`;
+        const li = document.createElement("li");
+        li.textContent = winner;
+        winnersList.appendChild(li);
+        runRandomizer(index + 1);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
