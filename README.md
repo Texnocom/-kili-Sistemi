@@ -1,4 +1,4 @@
-# -kili-Sistemi
+# Çıkiliş Sistemi
 Azərbaycan dilində çəkiliş sistemi olan web sayt
 
 
