@@ -1,4 +1,4 @@
-# Çıkiliş Sistemi
+# Çəkiliş Sistemi
 Azərbaycan dilində çəkiliş sistemi olan web sayt
 
 
